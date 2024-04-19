@@ -1,0 +1,16 @@
+{% for diary in diaries %}
+<div class="col-sm-12 col-md-6 col-lg-3 mb-4">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">{{ diary.title | safe }}</h5>
+      <p class="card-subtitle mb-2 text-muted">{{ diary.changed.strftime('%Y-%m-%d %H:%M') }}, {{ diary.length }} characters.</p>
+      <p class="card-text">{{ diary.text | safe }}</p>
+      <p class="card-text text-muted">
+        {% for tag in diary.labels %}
+        <span class="badge text-bg-light"># {{ tag }}</span>
+        {% endfor %}
+      </p>
+    </div>
+  </div>
+</div>
+{% endfor %}

@@ -1,0 +1,23 @@
+{% extends 'layouts/main.html' %}
+
+{% block title %}List by Date{% endblock %}
+
+{% block about %}
+  <p id="diarystats">This page is for showing the complete diary list.</p>
+{% endblock %}
+
+{% block content %}
+<div id="cardlist" class="row" data-masonry='{"percentPosition": true }'>
+    {{ cards | safe }}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(window).bind('scroll', bindScroll('{{ token }}'));
+
+$(document).ready(function() {
+    loadDiaryStats('{{ stats | safe }}');
+});
+</script>
+{% endblock %}
