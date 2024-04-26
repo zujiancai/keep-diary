@@ -1,0 +1,33 @@
+{% extends 'layouts/main.html' %}
+
+{% block title %}List by Month{% endblock %}
+
+{% block about %}
+  <p>{{ stats | safe }}</p>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <nav>
+    <ul class="pagination">
+    </ul>
+  </nav>
+</div>
+<h2 id="monthTitle"></h2>
+<hr>
+<div id="cardlist" class="row" data-masonry='{"percentPosition": true }'>
+    {{ cards | safe }}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/months.js"></script>
+<script>
+$(document).ready(function() {
+    all_months = JSON.parse('{{ months | tojson | safe }}');
+    curyear = parseInt('{{ curyear }}');
+    curmonth = parseInt('{{ curmonth }}');
+    renderNav(updateSelectedId(curyear, curmonth));
+});
+</script>
+{% endblock %}

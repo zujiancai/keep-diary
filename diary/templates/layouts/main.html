@@ -19,9 +19,9 @@
     <!-- /styles -->
 
     <!-- favicons/ -->
-    <link rel="apple-touch-icon" href="/static/img/favicon_256.png" sizes="180x180">
-    <link rel="mask-icon" href="/static/img/favicon.png" color="#712cf9">
-    <link rel="icon" href="/static/img/favicon.png">
+    <link rel="apple-touch-icon" href="/static/img/favicon.svg" sizes="180x180">
+    <link rel="mask-icon" href="/static/img/favicon.svg" color="#712cf9">
+    <link rel="icon" href="/static/img/favicon.svg">
     <meta name="theme-color" content="#712cf9">
     <!-- /favicons -->
 
@@ -50,10 +50,10 @@
                   <a class="nav-link disabled" href="#">Show All</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">List Months</a>
+                  <a class="nav-link" href="months">List Months</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">List Labels</a>
+                  <a class="nav-link" href="labels">List Labels</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="https://github.com/zujiancai/keep-diary" target="_blank">Project Page</a>
@@ -75,9 +75,7 @@
                         Wallpaper: Food
                       </button>
                       <ul class="dropdown-menu" aria-labelledby="backgroundImageDropdownButton" id="backgroundImageDropdownMenu">
-                        <li><a class="dropdown-item btn image-menu border-bottom disabled" href="#">Food</a></li>
-                        <li><a class="dropdown-item btn image-menu border-bottom" href="#">Grocery</a></li>
-                        <li><a class="dropdown-item btn image-menu border-bottom" href="#">Music</a></li>
+                        <li><a class="dropdown-item btn image-menu border-bottom active" href="#">Food</a></li>
                       </div>
                     </div>
                   </li>
@@ -108,6 +106,10 @@
         </div>
       </div>
     </main>
+
+    <!-- Modal -->
+    <div class="modal fade" id="diaryModal" tabindex="-1" aria-labelledby="diaryModalLabel" aria-hidden="true">
+    </div>
 
     <footer class="text-body-secondary py-5">
     <div class="container">

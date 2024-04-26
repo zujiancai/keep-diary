@@ -109,10 +109,10 @@
 .image-wallpaper {
   /*background-image: url('/static/img/food_light_0609.svg');*/
   background-attachment: fixed;
-  background-size: 100% 100%;
+  background-size: 100% auto;
   background-color: transparent;
-  background-position: center center;
-  background-size: contain;
+  background-position: center bottom;
+  background-size: cover;
 }
 
 .image-menu {
@@ -122,4 +122,9 @@
   background-repeat: no-repeat;
   background-size: contain;
   text-align: center;
+}
+
+.card:hover {
+  box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+  border-color: blue;
 }

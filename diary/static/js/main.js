@@ -4,17 +4,20 @@ function loadMore(continuation_token) {
     return;
 
   $('.loading-shield').show();
-  $.get('list-diaries?before=' + continuation_token + '&max=10', function(data, status) {
-    if (status != 'success') {
-      alert("Data: " + data + "\nStatus: " + status);
-    }
-    else {
+  $.ajax({
+    url: 'list-diaries?before=' + encodeURIComponent(continuation_token) + '&max=12',
+    type: 'GET',
+    success: function(data){ 
+      $('.loading-shield').hide();
+      $(window).bind('scroll', bindScroll(data.token));
       var $newCards = $(data.html);
       $("#cardlist").append($newCards).masonry('appended', $newCards);
+    },
+    error: function(data) {
+      $('.loading-shield').hide();
+      $(window).bind('scroll', bindScroll(data.token));
+      alert("Status: " + data.status + "\nError: " + data.statusText);
     }
-    
-    $('.loading-shield').hide();
-    $(window).bind('scroll', bindScroll(data.token));
   });
 }
 
@@ -76,6 +79,7 @@ function setWallpaper(wallpaper) {
   if (SupportedWallpapers.includes(wallpaper) || wallpaper == 'none') {
     localStorage.setItem(WALLPAPER_NAME, wallpaper);
     applyWallpaper();
+    populateWallpaperSelection();
   }
 }
 
@@ -89,6 +93,24 @@ function populateWallpaperSelection() {
       linkClasses += ' active';
     }
     parentElement.append('<li><a class="' + linkClasses + '" href="#" onclick="setWallpaper(\'' + wp + '\')">' + wp.charAt(0).toUpperCase() + wp.slice(1) + '</a></li>');
+  });
+}
+
+// Show diary details
+function showDetails(diaryId) {
+  $('.loading-shield').show();
+  $.ajax({
+    url: 'get-diary?id=' + encodeURIComponent(diaryId),
+    type: 'GET',
+    success: function(data){ 
+      $('.loading-shield').hide();
+      $('#diaryModal').html(data);
+      $('#diaryModal').modal('show');
+    },
+    error: function(data) {
+      $('.loading-shield').hide();
+      alert("Status: " + data.status + "\nError: " + data.statusText);
+    }
   });
 }
 

@@ -1,12 +1,13 @@
 {% extends 'layouts/main.html' %}
 
-{% block title %}Show All{% endblock %}
+{% block title %}List by Month{% endblock %}
 
 {% block about %}
   <p>{{ stats | safe }}</p>
 {% endblock %}
 
 {% block content %}
+<div class="row"></div>
 <div id="cardlist" class="row" data-masonry='{"percentPosition": true }'>
     {{ cards | safe }}
 </div>

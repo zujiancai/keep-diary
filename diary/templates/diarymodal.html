@@ -1,0 +1,17 @@
+<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+  <div class="modal-content">
+    <div class="modal-header" id="diaryModalHeader">
+      <h1 class="modal-title fs-5">{{ diary.title | safe }}</h1>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body" id="diaryModalBody">
+      <p class="mb-2 text-muted">At {{ diary.changed.strftime('%Y-%m-%d %H:%M') }}, {{ diary.length }} characters.</p>
+      <p id="diaryText">{{ diary.text | safe }}</p>
+      <p>
+        {% for tag in diary.labels %}
+        <span class="badge text-bg-light"># {{ tag }}</span>
+        {% endfor %}
+      </p>
+    </div>
+  </div>
+</div>

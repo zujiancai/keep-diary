@@ -38,10 +38,16 @@ db.bind(provider='sqlite', filename=SQLITE_DATABASE_PATH, create_db=True)
 db.generate_mapping(create_tables=True)
 
 
+def shorten_text(text: str) -> str:
+    text.find('\n')
+    short_text = text[:200] + '...' if len(text) > 300 else text
+    return short_text.replace('\n', '<br />')
+
+
 def output_diaries(raw_diaries, max_count: int) -> dict:
     data = {}
     diaries = raw_diaries[:max_count]
-    data['diaries'] = [{ 'title': diary.title, 'date': diary.date, 'text': diary.text.replace('\n', '<br />'), 'length': diary.length, 'labels': list(diary.labels),
+    data['diaries'] = [{ 'id': diary.id, 'title': diary.title, 'date': diary.date, 'text': shorten_text(diary.text), 'length': diary.length, 'labels': list(diary.labels),
             'changed': diary.updated_time if diary.updated_time else diary.inserted_time } for diary in diaries[:max_count]]
     data['token'] = diaries[-1].date.strftime('%Y-%m-%d') if len(raw_diaries) > max_count else ''
     return data
@@ -81,7 +87,18 @@ def diary_stats() -> dict:
 
 
 @db_session
-def list_diaries(max_count: int = 20, before_date: datetime = None) -> list:
+def get_diary(diary_id: str) -> dict:
+    '''
+    Retrieve a diary entry by ID.
+    '''
+    diary = Diary.get(id=diary_id)
+    if diary:
+        return { 'title': diary.title, 'date': diary.date, 'text': diary.text.replace('\n', '<br />'), 'length': diary.length, 'labels': list(diary.labels),
+            'changed': diary.updated_time if diary.updated_time else diary.inserted_time }
+
+
+@db_session
+def by_date(max_count: int = 20, before_date: datetime = None) -> list:
     '''
     List diaries by date in descending order. If before_date is provided, list diaries up to that date. By default, return the latest 20 diaries.
     '''
@@ -109,16 +126,17 @@ def by_month(year: int = 0, month: int = 0) -> dict:
     '''
     List diaries by year and month. If year and month are not provided, return the list for latest month with all available months.
     '''
+    months = sorted(list(select((d.date.year, d.date.month) for d in Diary).distinct()))
+    if not months:
+        return None
     if year == 0 and month == 0:
-        months = select((d.date.year, d.date.month) for d in Diary).distinct()
-        if not months:
-            return None
-        months = sorted(list(months), reverse=True)
-        year, month = months[0]
+        year, month = months[-1]
     start_date = datetime(year, month, 1)
     end_date = datetime(year + 1 if month == 12 else year, month + 1 if month < 12 else 1, 1)
     diaries = select(d for d in Diary if d.date >= start_date and d.date < end_date).order_by(desc(Diary.date))
-    return output_diaries(diaries, 100).update({'year': year, 'month': month, 'months': months if months else None })
+    rs = output_diaries(diaries, 100)
+    rs.update({'year': year, 'month': month, 'months': months })
+    return rs
 
 
 @db_session
