@@ -1,12 +1,20 @@
-const month_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var all_months = [];
 var selectedId = -1;
 var navBarLength = 7; // Number of months to display in the navigation bar, minimum 7 and increment by 2
 
+function prettyMonth(id, shorthand = false) {
+  const month_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const full_month_names = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  if (shorthand) 
+    return month_names[all_months[id][1] - 1] + "." + all_months[id][0];
+  else
+    return full_month_names[all_months[id][1] - 1] + ' ' + all_months[id][0];
+}
+
 function appendMonth(navElem, id) {
-  display_month = month_names[all_months[id][1] - 1] + " " + all_months[id][0];
+  display_month = prettyMonth(id, true);
   if (id == selectedId) {
-    return $(navElem).append("<li class=\"page-item active\"><span class=\"page-link\">" + display_month + "<span class=\"sr-only\">(current)</span></span></li>");
+    return $(navElem).append("<li class=\"page-item active\"><span class=\"page-link\">" + display_month + "</span></li>");
   }
   else {
     return $(navElem).append("<li class=\"page-item\"><a class=\"page-link\" href=\"months?year=" + all_months[id][0] + "&month=" + all_months[id][1] + "\">" + display_month + "</a></li>");
@@ -21,7 +29,8 @@ function updateSelectedId(curyear, curmonth) {
   for (let i = 0; i < all_months.length; i++) {
     if (all_months[i][0] == curyear && all_months[i][1] == curmonth) {
       selectedId = i;
-      $('#monthTitle').html(month_names[curmonth - 1] + " " + curyear);
+      $('#monthTitle').html(prettyMonth(selectedId));
+      $('#aboutText').html('This is a list of all diaries for ' + prettyMonth(selectedId) + '. There are totally ' + all_months.length + ' months from ' + prettyMonth(0) + ' to ' + prettyMonth(all_months.length - 1) + '.');
       break;
     }
   }

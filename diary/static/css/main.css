@@ -65,11 +65,6 @@
   margin-right: 1rem;
 }
 
-.loading-spinner img {
-  width: 6rem;
-  height: 6rem;
-}
-
 /* Keep background colors */
 .RED {
   background-color: rgb(255, 109, 63) !important;

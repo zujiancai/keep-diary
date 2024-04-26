@@ -6,11 +6,6 @@ from data_access import get_diary, diary_stats, by_date, by_month
 app = Flask(__name__)
 
 
-def get_stats_text() -> str:
-    stats_dict = diary_stats()
-    return 'This book contains {diaries} diaries with {length} characters, covering date range from {from} to {to}. The last change was at {last_changed}.'.format(**stats_dict)
-
-
 @app.errorhandler(500)
 def internal_error(error):
     #db_session.rollback()
@@ -29,7 +24,7 @@ def index():
     if not result or not 'diaries' in result or len(result['diaries']) == 0:
         return render_template('errors/404.html'), 404
     cards = render_template('cardlist.html', diaries=result['diaries'])
-    return render_template('index.html', cards=cards, token=result['token'] if 'token' in result else '', stats=get_stats_text())
+    return render_template('index.html', cards=cards, token=result['token'] if 'token' in result else '', stats=diary_stats())
 
 
 @app.route("/months")
@@ -43,7 +38,7 @@ def months():
     if not result or not 'diaries' in result or len(result['diaries']) == 0:
         return render_template('errors/404.html'), 404
     cards = render_template('cardlist.html', diaries=result['diaries'])
-    return render_template('months.html', cards=cards, curmonth=result['month'], curyear=result['year'], months=result['months'], stats=get_stats_text())
+    return render_template('months.html', cards=cards, curmonth=result['month'], curyear=result['year'], months=result['months'])
 
 
 @app.route("/list-diaries")
