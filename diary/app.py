@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify
 
-from data_access import get_diary, diary_stats, by_date, by_month
+from data_access import get_diary, diary_stats, by_date, by_month, simple_search
 
 app = Flask(__name__)
 
@@ -43,11 +43,13 @@ def months():
 
 @app.route("/list-diaries")
 def list():
-    before_date = request.args.get('before', None)
+    before_date_str = request.args.get('before', None)
     max_count = int(request.args.get('max', 20))
-    result = by_date(max_count, datetime.strptime(before_date, '%Y-%m-%d') if before_date else None)
+    search_keyword = request.args.get('find', None)
+    before_date = datetime.strptime(before_date_str, '%Y-%m-%d') if before_date_str else None
+    result = by_date(max_count, before_date) if not search_keyword else simple_search(search_keyword, max_count, before_date)
     if not result or not 'diaries' in result or len(result['diaries']) == 0:
-        return render_template('errors/404.html'), 404
+        return '', 404
     rbody = {'html': render_template('cardlist.html', diaries=result['diaries']), 'token': result['token'] if 'token' in result else ''}
     return jsonify(rbody)
 

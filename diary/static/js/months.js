@@ -63,3 +63,5 @@ function renderNav(curid) {
     appendMonth($navElem, max_id);
   }
 }
+
+// Path: diary/static/js/months.js

@@ -24,10 +24,10 @@
 <script src="/static/js/months.js"></script>
 <script>
 $(document).ready(function() {
-    all_months = JSON.parse('{{ months | tojson | safe }}');
-    curyear = parseInt('{{ curyear }}');
-    curmonth = parseInt('{{ curmonth }}');
-    renderNav(updateSelectedId(curyear, curmonth));
+  all_months = JSON.parse('{{ months | tojson | safe }}');
+  curyear = parseInt('{{ curyear }}');
+  curmonth = parseInt('{{ curmonth }}');
+  renderNav(updateSelectedId(curyear, curmonth));
 });
 </script>
 {% endblock %}

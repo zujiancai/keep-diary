@@ -36,6 +36,7 @@ function bindScroll(continuation_token) {
 const DIARYSTATS_NAME = 'diarystats';
 const DARKMODE_NAME = 'darkmode';
 const WALLPAPER_NAME = 'wallpaper';
+const SEARCH_HISTORY_NAME = 'searchhistory';
 
 // Load diary statistics
 function loadDiaryStats(stats) {
